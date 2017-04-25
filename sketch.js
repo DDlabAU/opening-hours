@@ -3,11 +3,11 @@ var openNext = [];
 var min;
 var fr=6;
 var tSize;//window.height/20;
-var ddImg;
+/*var ddImg;
 
 function preload () {
   ddImg=loadImage("lab1.png");
-}
+}*/
 
 
 function setup() {
@@ -48,10 +48,11 @@ function getData(data) {
 function draw() {
   if(openData){
     background(50);
-    imageMode(CENTER);
+    /*imageMode(CENTER);
     ddImg.resize(0,width/8);
     image(ddImg,width/2, height/5.5);
     filter(BLUR,3);
+    */
     fill(255);
     var result = handleData();
     if(result == 'Niels' || result == 'Ann' || result == 'Nikolaj'){
