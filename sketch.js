@@ -64,7 +64,7 @@ function draw() {
       var closingHours = openData.items[openNext[0]].end.dateTime.substr(11,5);
       text("Lukker kl " + closingHours, windowWidth/2, windowHeight/2+tSize+tSize/2);
 
-      text(Næste åbningstid d. " + openData.items[openNext[1]].start.dateTime.substr(8,2) +
+      text("Næste åbningstid d. " + openData.items[openNext[1]].start.dateTime.substr(8,2) +
        "/" + openData.items[openNext[1]].start.dateTime.substr(5,2) +
         ", fra kl " +openData.items[openNext[1]].start.dateTime.substr(11,5) + " til "
         +openData.items[openNext[1]].end.dateTime.substr(11,5)
