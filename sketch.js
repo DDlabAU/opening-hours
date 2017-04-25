@@ -6,7 +6,7 @@ var tSize;//window.height/20;
 var ddImg;
 
 function preload () {
-  ddImg=loadImage("assets/lab1.png");
+  ddImg=loadImage("lab1.png");
 }
 
 
