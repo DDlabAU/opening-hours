@@ -79,6 +79,7 @@ function draw() {
         text('lukket',windowWidth/2+textWidth("DD Lab er ")-textWidth("lukket")/2, windowHeight/2+textPlacement);
         fill(255);
         textPlacement=textPlacement+tSize;
+        textAlign(CENTER);
         for(var i = 0; i<3; i++){
           textPlacement=textPlacement+tSize;
           text("Lab'et har åbent d. " + openData.items[openNext[i]].start.dateTime.substr(8,2) +
