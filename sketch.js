@@ -78,6 +78,7 @@ function draw() {
         textAlign(RIGHT);
         text('lukket',windowWidth/2+textWidth("DD Lab er ")-textWidth("lukket")/2, windowHeight/2+textPlacement);
         fill(255);
+      textAlign(CENTER);
         textPlacement=textPlacement+tSize;
         for(var i = 0; i<3; i++){
           textPlacement=textPlacement+tSize;
