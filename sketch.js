@@ -6,7 +6,7 @@ var tSize;//window.height/20;
 var ddImg;
 
 function preload () {
-  ddImg=loadImage("lab1.png");
+  //ddImg=loadImage("lab1.png");
 }
 
 
@@ -49,8 +49,8 @@ function draw() {
   if(openData){
     background(50);
     imageMode(CENTER);
-    ddImg.resize(0,width/8);
-    image(ddImg,width/2, height/5.5);
+    // ddImg.resize(0,width/8);
+    // image(ddImg,width/2, height/5.5);
     filter(BLUR,3);
     fill(255);
     var result = handleData();
@@ -132,4 +132,3 @@ function drawOpen(){
     text(dates[i].summary + ': ' + dates[i].start.dateTime, w,h+20);
   }
 }
-
