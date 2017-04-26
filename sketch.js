@@ -5,9 +5,9 @@ var fr = 6;
 var tSize;//window.height/20;
 var ddImg;
 
-function preload () {
-  //ddImg=loadImage("lab1.png");
-}
+// function preload () {
+//   ddImg=loadImage("lab1.png");
+// }
 
 
 function setup() {
