@@ -72,7 +72,7 @@ function draw() {
         ,windowWidth/2, windowHeight/2+tSize*4);
     }
     else{
-        var textPlacement = -6*tSize;
+        var textPlacement = -9*tSize;
         text('DD Lab er ',windowWidth/2-textWidth("lukket")/2, windowHeight/2+textPlacement);
         fill(255,0,0);
         textAlign(RIGHT);
