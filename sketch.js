@@ -79,12 +79,13 @@ function draw() {
         ,windowWidth/2, windowHeight/2+tSize*4);
     }
     else{
-        var textPlacement = -6*tSize;
+        var textPlacement = -2*tSize;
         text('DD Lab er ',windowWidth/2-textWidth("lukket")/2, windowHeight/2+textPlacement);
         fill(255,0,0);
         textAlign(RIGHT);
-        text('lukket',windowWidth/2+textWidth("DD Lab er ")-textWidth("lukket")/2, windowHeight/2+textPlacement);
+        text('lukket',windowWidth/2+textWidth("DD Lab er  ")-textWidth("lukket")/2, windowHeight/2+textPlacement);
         fill(255);
+      textAlign(CENTER);
         textPlacement=textPlacement+tSize;
         textAlign(CENTER);
         for(var i = 0; i<3; i++){
