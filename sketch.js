@@ -4,10 +4,14 @@ var min;
 var fr = 6;
 var tSize;//window.height/20;
 var ddImg;
+var millisecond;
+var lastTime;
+var loadInterval;
 
-// function preload () {
-//   ddImg=loadImage("lab1.png");
-// }
+
+function preload () {
+  ddImg=loadImage("images/lab1.png");
+}
 
 
 function setup() {
@@ -23,8 +27,11 @@ function setup() {
   }
   textSize(32);
   textAlign(CENTER);
-  frameRate(fr);
+  //frameRate(fr);
   textSize(tSize);
+  millisecond = millis();
+  loadInterval = 10000;
+  lastTime = millisecond;
 }
 
 function update(){
@@ -49,8 +56,8 @@ function draw() {
   if(openData){
     background(50);
     imageMode(CENTER);
-    // ddImg.resize(0,width/8);
-    // image(ddImg,width/2, height/5.5);
+    ddImg.resize(0,width/8);
+    image(ddImg,width/2, height/5.5);
     filter(BLUR,3);
     fill(255);
     var result = handleData();
@@ -94,7 +101,11 @@ function draw() {
       }
     }
   openData= "";
-  update();
+  millisecond = millis();
+  if(millisecond>lastTime+loadInterval){
+    lastTime = millisecond;
+    update();
+  }
 }
 
 
