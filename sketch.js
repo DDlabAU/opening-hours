@@ -100,8 +100,8 @@ function draw() {
           textPlacement=textPlacement+tSize;
         }
       }
+      openData= "";
     }
-  openData= "";
   millisecond = millis();
   if(millisecond>lastTime+loadInterval){
     lastTime = millisecond;
