@@ -7,10 +7,10 @@ var ddImg;
 
 var millisJSON;
 var lastTime;
-var loadInterval;
+var loadInterval = 10000;
 
 var notInLab;
-var timeIntervalMin;
+var timerIntervalMin = 5;
 var millisPause;
 var lastPause;
 
@@ -23,26 +23,22 @@ var lastPause;
 function setup() {
   update();
   noCursor();
-  //createCanvas(windowWidth ,windowHeight);
   createCanvas (windowWidth, windowHeight);
   if(windowWidth<windowHeight){
-    tSize = windowWidth/20;
+    tSize = windowWidth/15;
   }
   else{
-    tSize = windowHeight/20;
+    tSize = windowHeight/15;
   }
   textSize(32);
   textAlign(CENTER);
-  //frameRate(fr);
   textSize(tSize);
   background(50);
   text("Henter JSON", windowWidth/2, windowHeight/2);
   millisJSON = millis();
   millisPause = millis();
-  loadInterval = 10000;
   lastTime = millisJSON;
   notInLab = 0;
-  timerIntervalMin = 5;
 }
 
 function update(){
@@ -66,7 +62,7 @@ function getData(data) {
 function draw() {
 
   fill(255);
-  if(notInLab == 0){
+  if(notInLab <= 0){
     if(openData){
       drawOpen();
       millisJSON = millis();
@@ -76,21 +72,24 @@ function draw() {
       }
     }
   }
-  else if(notInLab>=1){
+  if(notInLab>=1){
     background(50);
     textAlign(CENTER);
     fill(255);
     millisPause = millis();
     notInLab = notInLab - (millisPause-lastPause);
     var textToDisplay = notInLab/60/1000;
-    text("Er tilbage om cirka " + round(textToDisplay) + " minutter", windowWidth/2, windowHeight/2);
+    text("Er tilbage om cirka " + Math.ceil(textToDisplay) + " minutter", windowWidth/2, windowHeight/2);
     print(notInLab);
     lastPause = millisPause;
+    // if(notInLab<=0){
+    //   update();
+    // }
   }
-  else{
-    notInLab=0;
-    update();
-  }
+  // else{
+  //   notInLab=0;
+  //   update();
+  // }
 }
 
 function handleData(){
@@ -162,7 +161,7 @@ function drawOpen(){
         textPlacement=textPlacement+tSize;
       }
     }
-    openData= "";
+    //openData= "";
 }
 
 function keyTyped() {
@@ -170,11 +169,9 @@ function keyTyped() {
     notInLab = notInLab+ timerIntervalMin*60*1000;
     millisPause = millis();
     lastPause = millisPause;
-    print("five minutes break");
   }
   if (key == 's') {
     notInLab = 0;
-    print("i'm back");
     update();
   }
 }
