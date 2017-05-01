@@ -1,7 +1,6 @@
 var openData;
 var openNext = [];
 var min;
-var fr = 6;
 var tSize;//window.height/20;
 var ddImg;
 
@@ -35,10 +34,12 @@ function setup() {
   textSize(tSize);
   background(50);
   text("Henter JSON", windowWidth/2, windowHeight/2);
+
   millisJSON = millis();
   millisPause = millis();
   lastTime = millisJSON;
   notInLab = 0;
+
 }
 
 function update(){
