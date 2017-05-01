@@ -1,7 +1,6 @@
 var openData;
 var openNext = [];
 var min;
-var fr = 6;
 var tSize;//window.height/20;
 var ddImg;
 var millisecond;
@@ -17,7 +16,6 @@ function preload () {
 function setup() {
   update();
   noCursor();
-  //createCanvas(windowWidth ,windowHeight);
   createCanvas (windowWidth, windowHeight);
   if(windowWidth<windowHeight){
     tSize = windowWidth/20;
@@ -27,10 +25,9 @@ function setup() {
   }
   textSize(32);
   textAlign(CENTER);
-  //frameRate(fr);
   textSize(tSize);
   background(50);
-  text("Henter JSON", windowWidth/2, windowHeight/2); 
+  text("Henter JSON", windowWidth/2, windowHeight/2);
   millisecond = millis();
   loadInterval = 10000;
   lastTime = millisecond;
