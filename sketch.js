@@ -15,9 +15,9 @@ var millisPause;
 var lastPause;
 
 
-// function preload () {
-//   ddImg=loadImage("images/lab1.png");
-// }
+function preload () {
+  ddImg=loadImage("images/lab1.png");
+}
 
 
 function setup() {
@@ -117,10 +117,10 @@ function handleData(){
 
 function drawOpen(){
   background(50);
-  // imageMode(CENTER);
-  // ddImg.resize(0,width/8);
-  // image(ddImg,width/2, height/5.5);
-  // filter(BLUR,3);
+  imageMode(CENTER);
+  ddImg.resize(0,width/8);
+  image(ddImg,width/2, height/5.5);
+  filter(BLUR,3);
   var result = handleData();
   if(result == 'Niels' || result == 'Ann' || result == 'Nikolaj'){
     text("DD Lab er ",windowWidth/2-textWidth("åbent")/2, windowHeight/2-tSize-tSize/2);
