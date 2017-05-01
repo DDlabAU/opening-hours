@@ -24,10 +24,10 @@ function setup() {
   noCursor();
   createCanvas (windowWidth, windowHeight);
   if(windowWidth<windowHeight){
-    tSize = windowWidth/15;
+    tSize = windowWidth/20;
   }
   else{
-    tSize = windowHeight/15;
+    tSize = windowHeight/20;
   }
   textSize(32);
   textAlign(CENTER);
