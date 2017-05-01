@@ -3,9 +3,15 @@ var openNext = [];
 var min;
 var tSize;//window.height/20;
 var ddImg;
-var millisecond;
+
+var millisJSON;
 var lastTime;
-var loadInterval;
+var loadInterval = 10000;
+
+var notInLab;
+var timerIntervalMin = 5;
+var millisPause;
+var lastPause;
 
 
 function preload () {
@@ -18,19 +24,22 @@ function setup() {
   noCursor();
   createCanvas (windowWidth, windowHeight);
   if(windowWidth<windowHeight){
-    tSize = windowWidth/20;
+    tSize = windowWidth/15;
   }
   else{
-    tSize = windowHeight/20;
+    tSize = windowHeight/15;
   }
   textSize(32);
   textAlign(CENTER);
   textSize(tSize);
   background(50);
   text("Henter JSON", windowWidth/2, windowHeight/2);
-  millisecond = millis();
-  loadInterval = 10000;
-  lastTime = millisecond;
+
+  millisJSON = millis();
+  millisPause = millis();
+  lastTime = millisJSON;
+  notInLab = 0;
+
 }
 
 function update(){
@@ -52,63 +61,37 @@ function getData(data) {
 }
 
 function draw() {
-  if(openData){
-    background(50);
-    imageMode(CENTER);
-    ddImg.resize(0,width/8);
-    image(ddImg,width/2, height/5.5);
-    filter(BLUR,3);
-    fill(255);
-    var result = handleData();
-    if(result == 'Niels' || result == 'Ann' || result == 'Nikolaj'){
-      text("DD Lab er ",windowWidth/2-textWidth("åbent")/2, windowHeight/2-tSize-tSize/2);
-      fill(57,123,255);
-      textAlign(RIGHT);
-      text("åbent",windowWidth/2+textWidth("DD Lab er ")-textWidth("åbent")/2, windowHeight/2-tSize-tSize/2);
-      textAlign(CENTER);
-      fill(255);
-      text(result + ' er på arbejde',windowWidth/2, windowHeight/2);
-      var closingHours = openData.items[openNext[0]].end.dateTime.substr(11,5);
-      text("Lukker kl " + closingHours, windowWidth/2, windowHeight/2+tSize+tSize/2);
 
-      text("Næste åbningstid d. " + openData.items[openNext[1]].start.dateTime.substr(8,2) +
-       "/" + openData.items[openNext[1]].start.dateTime.substr(5,2) +
-        ", fra kl " +openData.items[openNext[1]].start.dateTime.substr(11,5) + " til "
-        +openData.items[openNext[1]].end.dateTime.substr(11,5)
-        ,windowWidth/2, windowHeight/2+tSize*4);
-    }
-    else{
-        var textPlacement = -2*tSize;
-        text('DD Lab er ',windowWidth/2-textWidth("lukket")/2, windowHeight/2+textPlacement);
-        fill(255,0,0);
-        textAlign(RIGHT);
-        text('lukket',windowWidth/2+textWidth("DD Lab er  ")-textWidth("lukket")/2, windowHeight/2+textPlacement);
-        fill(255);
-      textAlign(CENTER);
-        textPlacement=textPlacement+tSize;
-        textAlign(CENTER);
-        for(var i = 0; i<3; i++){
-          textPlacement=textPlacement+tSize;
-          text("Lab'et har åbent d. " + openData.items[openNext[i]].start.dateTime.substr(8,2) +
-           "/" + openData.items[openNext[i]].start.dateTime.substr(5,2) +
-            ", fra kl " +openData.items[openNext[i]].start.dateTime.substr(11,5) + " til "
-            +openData.items[openNext[i]].end.dateTime.substr(11,5)
-              ,windowWidth/2, windowHeight/2+textPlacement);
-          textPlacement=textPlacement+tSize;
-          text("ansatte på arbejde er "+ openData.items[openNext[i]].summary,windowWidth/2, windowHeight/2+textPlacement);
-          textPlacement=textPlacement+tSize;
-        }
+  fill(255);
+  if(notInLab <= 0){
+    if(openData){
+      drawOpen();
+      millisJSON = millis();
+      if(millisJSON>lastTime+loadInterval){
+        lastTime = millisJSON;
+        update();
       }
-      openData= "";
     }
-  millisecond = millis();
-  if(millisecond>lastTime+loadInterval){
-    lastTime = millisecond;
-    update();
   }
+  if(notInLab>=1){
+    background(50);
+    textAlign(CENTER);
+    fill(255);
+    millisPause = millis();
+    notInLab = notInLab - (millisPause-lastPause);
+    var textToDisplay = notInLab/60/1000;
+    text("Er tilbage om cirka " + Math.ceil(textToDisplay) + " minutter", windowWidth/2, windowHeight/2);
+    print(notInLab);
+    lastPause = millisPause;
+    // if(notInLab<=0){
+    //   update();
+    // }
+  }
+  // else{
+  //   notInLab=0;
+  //   update();
+  // }
 }
-
-
 
 function handleData(){
   //openData = data;
@@ -134,13 +117,62 @@ function handleData(){
 
 
 function drawOpen(){
-  dates = openData.items;
-  print(hour()+':'+minute()+':'+second()+' '+day()+'/'+month()+'-'+year());
-  randomSeed(5);
-  for(var i = 0; i<dates.length; i++){
-    var w = random(width);
-    var h = random(height);
-    ellipse(w,h, 20,20);
-    text(dates[i].summary + ': ' + dates[i].start.dateTime, w,h+20);
+  background(50);
+  imageMode(CENTER);
+  ddImg.resize(0,width/8);
+  image(ddImg,width/2, height/5.5);
+  filter(BLUR,3);
+  var result = handleData();
+  if(result == 'Niels' || result == 'Ann' || result == 'Nikolaj'){
+    text("DD Lab er ",windowWidth/2-textWidth("åbent")/2, windowHeight/2-tSize-tSize/2);
+    fill(57,123,255);
+    textAlign(RIGHT);
+    text("åbent",windowWidth/2+textWidth("DD Lab er ")-textWidth("åbent")/2, windowHeight/2-tSize-tSize/2);
+    textAlign(CENTER);
+    fill(255);
+    text(result + ' er på arbejde',windowWidth/2, windowHeight/2);
+    var closingHours = openData.items[openNext[0]].end.dateTime.substr(11,5);
+    text("Lukker kl " + closingHours, windowWidth/2, windowHeight/2+tSize+tSize/2);
+
+    text("Næste åbningstid d. " + openData.items[openNext[1]].start.dateTime.substr(8,2) +
+     "/" + openData.items[openNext[1]].start.dateTime.substr(5,2) +
+      ", fra kl " +openData.items[openNext[1]].start.dateTime.substr(11,5) + " til "
+      +openData.items[openNext[1]].end.dateTime.substr(11,5)
+      ,windowWidth/2, windowHeight/2+tSize*4);
+  }
+  else{
+      var textPlacement = -2*tSize;
+      text('DD Lab er ',windowWidth/2-textWidth("lukket")/2, windowHeight/2+textPlacement);
+      fill(255,0,0);
+      textAlign(RIGHT);
+      text('lukket',windowWidth/2+textWidth("DD Lab er  ")-textWidth("lukket")/2, windowHeight/2+textPlacement);
+      fill(255);
+    textAlign(CENTER);
+      textPlacement=textPlacement+tSize;
+      textAlign(CENTER);
+      for(var i = 0; i<3; i++){
+        textPlacement=textPlacement+tSize;
+        text("Lab'et har åbent d. " + openData.items[openNext[i]].start.dateTime.substr(8,2) +
+         "/" + openData.items[openNext[i]].start.dateTime.substr(5,2) +
+          ", fra kl " +openData.items[openNext[i]].start.dateTime.substr(11,5) + " til "
+          +openData.items[openNext[i]].end.dateTime.substr(11,5)
+            ,windowWidth/2, windowHeight/2+textPlacement);
+        textPlacement=textPlacement+tSize;
+        text("ansatte på arbejde er "+ openData.items[openNext[i]].summary,windowWidth/2, windowHeight/2+textPlacement);
+        textPlacement=textPlacement+tSize;
+      }
+    }
+    //openData= "";
+}
+
+function keyTyped() {
+  if (key === 'a') {
+    notInLab = notInLab+ timerIntervalMin*60*1000;
+    millisPause = millis();
+    lastPause = millisPause;
+  }
+  if (key == 's') {
+    notInLab = 0;
+    update();
   }
 }
