@@ -81,7 +81,6 @@ function draw() {
     notInLab = notInLab - (millisPause-lastPause);
     var textToDisplay = notInLab/60/1000;
     text("Er tilbage om cirka " + Math.ceil(textToDisplay) + " minutter", windowWidth/2, windowHeight/2);
-    print(notInLab);
     lastPause = millisPause;
     // if(notInLab<=0){
     //   update();
