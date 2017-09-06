@@ -98,7 +98,7 @@ function handleData(){
   for(var i = 0; i<openData.items.length; i++){
     var labRat = openData.items[i].summary;
 
-    if(labRat=='Niels' || labRat == 'Ann' || labRat == 'Nikolaj'){
+    if(labRat=='Niels' || labRat == 'Ann' || labRat == 'Nikolaj' || labRat == 'Anders' ){
       append(openNext, i);
     }
   }
@@ -122,7 +122,7 @@ function drawOpen(){
   image(ddImg,width/2, height/5.5);
   filter(BLUR,3);
   var result = handleData();
-  if(result == 'Niels' || result == 'Ann' || result == 'Nikolaj'){
+  if(labRat=='Niels' || labRat == 'Ann' || labRat == 'Nikolaj' || labRat == 'Anders' ){
     text("DD Lab er ",windowWidth/2-textWidth("åbent")/2, windowHeight/2-tSize-tSize/2);
     fill(57,123,255);
     textAlign(RIGHT);
