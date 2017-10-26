@@ -1,5 +1,6 @@
 var openData;
-var openNext = [];
+var events = [];
+var announcements = [];
 var min;
 var tSize;//window.height/20;
 // var ddImg;
@@ -60,55 +61,61 @@ function windowResized() {
 
 function getData(data) {
   openData = data;
-  println("json data: ")
   println(openData);
   waitForData= 1;
-  println(hour()+':'+minute()+':'+second());
-  println(day()+'/'+month()+'/'+year());
-  print('Today: ');
 }
 
 function draw() {
   fill(255);
   if(waitForData != 0){
     drawOpen();
+
   }
 }
 
 function handleData(){
-  //openData = data;
-  openNext = [];
+  //openData = data; append(openNext, i);
+  events = [];
   for(var i = 0; i<openData.items.length; i++){
     var labRat = openData.items[i].summary;
     if(labRat=='Niels' || labRat == 'Ann' || labRat == 'Nikolaj' || labRat == 'Anders' || labRat == 'Søren'){
-      append(openNext, i);
+      append(events,
+        new Event(
+        openData.items[i].summary,
+        openData.items[i].start.dateTime,
+        openData.items[i].end.dateTime,
+        openData.items[i].description
+        )
+      );
+    }
+    if(labRat == 'OBS'){
+      append(announcements,
+        new Event(
+        openData.items[i].summary,
+        openData.items[i].start.dateTime,
+        openData.items[i].end.dateTime,
+        openData.items[i].description
+        )
+      );
     }
   }
-  var today = openData.items[openNext[0]].start.dateTime;
-  var beginOf = today.substr(8, 2);
-  var openingHours = today.substr(11,2);
-  var closingHours = openData.items[openNext[0]].end.dateTime.substr(11,2);
-  var checkObject = new Event(
-    openData.items[0].summary,
-    openData.items[openNext[0]].start.dateTime,
-    openData.items[openNext[0]].end.dateTime,
-    openData.items[openNext[0]].description);
-  println(checkObject);
-  println("startDate: " + checkObject.getHour("begin") + ":" + checkObject.getMinute("begin") +
-  " " + checkObject.getDay("begin") + "/" + checkObject.getMonth("begin"));
-  // println("get day: " + checkObject.getDay("begin"));
+  println('Aabningstider: ');
+  println(events);
 
-  if(beginOf==day() && hour()>=openingHours && hour()<closingHours){
-    return openData.items[openNext[0]].summary;
-  }
-  else {
-    return 'Closed';
-  }
+  println('Beskeder: ');
+  println(announcements);
+
+  // if(beginOf==day() && hour()>=openingHours && hour()<closingHours){
+  //   return openData.items[events[0]].summary;
+  // }
+  // else {
+  //   return 'Closed';
+  // }
 }
 
 
 function drawOpen(){
-  background(50);
+  background(50);/*
   var result = handleData();
   if(result=='Niels' || result == 'Ann' || result == 'Nikolaj' || result == 'Anders' || result == 'Søren' ){
     text("DD Lab er ",windowWidth/2-textWidth("åbent")/2, windowHeight/2-tSize-tSize/2);
@@ -118,13 +125,13 @@ function drawOpen(){
     textAlign(CENTER);
     fill(255);
     text(result + ' er på arbejde',windowWidth/2, windowHeight/2);
-    var closingHours = openData.items[openNext[0]].end.dateTime.substr(11,5);
+    var closingHours = openData.items[events[0]].end.dateTime.substr(11,5);
     text("Lukker kl " + closingHours, windowWidth/2, windowHeight/2+tSize+tSize/2);
 
-    text("Næste åbningstid d. " + openData.items[openNext[1]].start.dateTime.substr(8,2) +
-     "/" + openData.items[openNext[1]].start.dateTime.substr(5,2) +
-      ", fra kl " +openData.items[openNext[1]].start.dateTime.substr(11,5) + " til "
-      +openData.items[openNext[1]].end.dateTime.substr(11,5)
+    text("Næste åbningstid d. " + openData.items[events[1]].start.dateTime.substr(8,2) +
+     "/" + openData.items[events[1]].start.dateTime.substr(5,2) +
+      ", fra kl " +openData.items[events[1]].start.dateTime.substr(11,5) + " til "
+      +openData.items[events[1]].end.dateTime.substr(11,5)
       ,windowWidth/2, windowHeight/2+tSize*4);
   }
   else{
@@ -139,17 +146,17 @@ function drawOpen(){
       textAlign(CENTER);
       for(var i = 0; i<3; i++){
         textPlacement=textPlacement+tSize;
-        text("Lab'et har åbent d. " + openData.items[openNext[i]].start.dateTime.substr(8,2) +
-         "/" + openData.items[openNext[i]].start.dateTime.substr(5,2) +
-          ", fra kl " +openData.items[openNext[i]].start.dateTime.substr(11,5) + " til "
-          +openData.items[openNext[i]].end.dateTime.substr(11,5)
+        text("Lab'et har åbent d. " + openData.items[events[i]].start.dateTime.substr(8,2) +
+         "/" + openData.items[events[i]].start.dateTime.substr(5,2) +
+          ", fra kl " +openData.items[events[i]].start.dateTime.substr(11,5) + " til "
+          +openData.items[events[i]].end.dateTime.substr(11,5)
             ,windowWidth/2, windowHeight/2+textPlacement);
         textPlacement=textPlacement+tSize;
-        text("ansatte på arbejde er "+ openData.items[openNext[i]].summary,windowWidth/2, windowHeight/2+textPlacement);
+        text("ansatte på arbejde er "+ openData.items[events[i]].summary,windowWidth/2, windowHeight/2+textPlacement);
         textPlacement=textPlacement+tSize;
       }
     }
-    // openData= "";
+    // openData= "";*/
 }
 
 function keyTyped() {
@@ -161,5 +168,6 @@ function keyTyped() {
   if (key == 's') {
     notInLab = 0;
     update();
+    handleData();
   }
 }

@@ -42,29 +42,3 @@ function Event(name, startDate, endDate, description){
     return returnVal;
   }
 }
-
-/*
- name,
- Day,
- Month,
- Hour,
- Minute,
-
-
- this.getDay = function(beginEnd){
-   if(beginEnd == begin){
-     return this.returnSubstring(this.startDate, 8,2);
-   }
-   else{
-     return this.returnSubstring(this.endDate, 8,2);
-   }
- },
-
-
- var today = openData.items[openNext[0]].start.dateTime;
-
- var beginOf = today.substr(8, 2);
- var openingHours = today.substr(11,2);
- var closingHours = openData.items[openNext[0]].end.dateTime.substr(11,2);
-
- */
