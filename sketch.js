@@ -3,7 +3,7 @@ var openNext = [];
 var min;
 var tSize;//window.height/20;
 // var ddImg;
-var labRat;
+// var labRat;
 
 var millisJSON;
 var lastTime;
@@ -79,7 +79,7 @@ function handleData(){
   //openData = data;
   openNext = [];
   for(var i = 0; i<openData.items.length; i++){
-    labRat = openData.items[i].summary;
+    var labRat = openData.items[i].summary;
 
     if(labRat=='Niels' || labRat == 'Ann' || labRat == 'Nikolaj' || labRat == 'Anders' || labRat == 'Søren'){
       append(openNext, i);
@@ -102,7 +102,7 @@ function handleData(){
 function drawOpen(){
   background(50);
   var result = handleData();
-  if(labRat=='Niels' || labRat == 'Ann' || labRat == 'Nikolaj' || labRat == 'Anders' || labRat == 'Søren' ){
+  if(result=='Niels' || result == 'Ann' || result == 'Nikolaj' || result == 'Anders' || result == 'Søren' ){
     text("DD Lab er ",windowWidth/2-textWidth("åbent")/2, windowHeight/2-tSize-tSize/2);
     fill(57,123,255);
     textAlign(RIGHT);
