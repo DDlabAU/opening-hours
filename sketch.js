@@ -80,16 +80,24 @@ function handleData(){
   openNext = [];
   for(var i = 0; i<openData.items.length; i++){
     var labRat = openData.items[i].summary;
-
     if(labRat=='Niels' || labRat == 'Ann' || labRat == 'Nikolaj' || labRat == 'Anders' || labRat == 'Søren'){
       append(openNext, i);
     }
   }
   var today = openData.items[openNext[0]].start.dateTime;
-  print(today)
   var beginOf = today.substr(8, 2);
   var openingHours = today.substr(11,2);
   var closingHours = openData.items[openNext[0]].end.dateTime.substr(11,2);
+  var checkObject = new Event(
+    openData.items[0].summary,
+    openData.items[openNext[0]].start.dateTime,
+    openData.items[openNext[0]].end.dateTime,
+    openData.items[openNext[0]].description);
+  println(checkObject);
+  println("startDate: " + checkObject.getHour("begin") + ":" + checkObject.getMinute("begin") +
+  " " + checkObject.getDay("begin") + "/" + checkObject.getMonth("begin"));
+  // println("get day: " + checkObject.getDay("begin"));
+
   if(beginOf==day() && hour()>=openingHours && hour()<closingHours){
     return openData.items[openNext[0]].summary;
   }
