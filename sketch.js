@@ -2,7 +2,8 @@ var openData;
 var openNext = [];
 var min;
 var tSize;//window.height/20;
-var ddImg;
+// var ddImg;
+var labRat;
 
 var millisJSON;
 var lastTime;
@@ -12,10 +13,11 @@ var notInLab;
 var timerIntervalMin = 5;
 var millisPause;
 var lastPause;
+var waitForData = 0;
 
 
 function preload () {
-  ddImg=loadImage("images/lab1.png");
+  // ddImg=loadImage("images/lab1.png");
 }
 
 
@@ -58,51 +60,33 @@ function windowResized() {
 
 function getData(data) {
   openData = data;
+  println("json data: ")
+  println(openData);
+  waitForData= 1;
+  println(hour()+':'+minute()+':'+second());
+  println(day()+'/'+month()+'/'+year());
+  print('Today: ');
 }
 
 function draw() {
-
   fill(255);
-  if(notInLab <= 0){
-    if(openData){
-      drawOpen();
-      millisJSON = millis();
-      if(millisJSON>lastTime+loadInterval){
-        lastTime = millisJSON;
-        update();
-      }
-    }
+  if(waitForData != 0){
+    drawOpen();
   }
-  if(notInLab>=1){
-    background(50);
-    textAlign(CENTER);
-    fill(255);
-    millisPause = millis();
-    notInLab = notInLab - (millisPause-lastPause);
-    var textToDisplay = notInLab/60/1000;
-    text("Er tilbage om cirka " + Math.ceil(textToDisplay) + " minutter", windowWidth/2, windowHeight/2);
-    lastPause = millisPause;
-    // if(notInLab<=0){
-    //   update();
-    // }
-  }
-  // else{
-  //   notInLab=0;
-  //   update();
-  // }
 }
 
 function handleData(){
   //openData = data;
   openNext = [];
   for(var i = 0; i<openData.items.length; i++){
-    var labRat = openData.items[i].summary;
+    labRat = openData.items[i].summary;
 
     if(labRat=='Niels' || labRat == 'Ann' || labRat == 'Nikolaj' || labRat == 'Anders' || labRat == 'Søren'){
       append(openNext, i);
     }
   }
   var today = openData.items[openNext[0]].start.dateTime;
+  print(today)
   var beginOf = today.substr(8, 2);
   var openingHours = today.substr(11,2);
   var closingHours = openData.items[openNext[0]].end.dateTime.substr(11,2);
@@ -117,10 +101,6 @@ function handleData(){
 
 function drawOpen(){
   background(50);
-  imageMode(CENTER);
-  ddImg.resize(0,width/8);
-  image(ddImg,width/2, height/5.5);
-  filter(BLUR,3);
   var result = handleData();
   if(labRat=='Niels' || labRat == 'Ann' || labRat == 'Nikolaj' || labRat == 'Anders' || labRat == 'Søren' ){
     text("DD Lab er ",windowWidth/2-textWidth("åbent")/2, windowHeight/2-tSize-tSize/2);
@@ -161,7 +141,7 @@ function drawOpen(){
         textPlacement=textPlacement+tSize;
       }
     }
-    //openData= "";
+    // openData= "";
 }
 
 function keyTyped() {
