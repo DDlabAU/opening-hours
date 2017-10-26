@@ -105,12 +105,14 @@ function handleData(){
   println('Beskeder: ');
   println(announcements);
 
-  // if(beginOf==day() && hour()>=openingHours && hour()<closingHours){
-  //   return openData.items[events[0]].summary;
-  // }
-  // else {
-  //   return 'Closed';
-  // }
+  if(events[0].getDay("begin")==day() && hour()>=events[0].getHour("begin") && hour()<events[0].getHour("end")){
+    // return openData.items[events[0]].summary;
+    println("OPEN!!!");
+  }
+  else {
+    println("CLOSED!!!");
+    // return 'Closed';
+  }
 }
 
 
