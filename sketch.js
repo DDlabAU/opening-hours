@@ -1,6 +1,9 @@
 var openData;
 var events = [];
-var announcements = [];
+var announcements = [
+  "Døren til DD Lab må ikke stå åben uden for åbningstiderne, på grund af alarmen.",
+  "Hvis du/I har et projekt, det være sig bachelor-, eksamens- (kandidat), speciale- e.lign. og ønsker 24-7 adgang til lab´et, så send en kort beskrivelse af projektet, den periode det løber i samt en kort beskrivelse af din/jeres tilknytning til universitetet. Du kan altid anvende lab’et indenfor dets åbningstid. Ansøgningen sendes til: Rasmus Lunding, rasl@cc.au.dk"
+];
 var min;
 var tSize;//window.height/20;
 // var ddImg;
@@ -42,7 +45,6 @@ function setup() {
   millisPause = millis();
   lastTime = millisJSON;
   notInLab = 0;
-
 }
 
 function update(){
@@ -68,8 +70,8 @@ function getData(data) {
 function draw() {
   fill(255);
   if(waitForData != 0){
+    update();
     drawOpen();
-
   }
 }
 
@@ -99,27 +101,21 @@ function handleData(){
       );
     }
   }
-  println('Aabningstider: ');
-  println(events);
-
-  println('Beskeder: ');
-  println(announcements);
 
   if(events[0].getDay("begin")==day() && hour()>=events[0].getHour("begin") && hour()<events[0].getHour("end")){
-    // return openData.items[events[0]].summary;
     println("OPEN!!!");
+    return events[0].name;
   }
   else {
     println("CLOSED!!!");
-    // return 'Closed';
+    return 'closed';
   }
 }
 
-
 function drawOpen(){
-  background(50);/*
+  background(50);
   var result = handleData();
-  if(result=='Niels' || result == 'Ann' || result == 'Nikolaj' || result == 'Anders' || result == 'Søren' ){
+  if(result!= 'closed'){
     text("DD Lab er ",windowWidth/2-textWidth("åbent")/2, windowHeight/2-tSize-tSize/2);
     fill(57,123,255);
     textAlign(RIGHT);
@@ -127,13 +123,11 @@ function drawOpen(){
     textAlign(CENTER);
     fill(255);
     text(result + ' er på arbejde',windowWidth/2, windowHeight/2);
-    var closingHours = openData.items[events[0]].end.dateTime.substr(11,5);
-    text("Lukker kl " + closingHours, windowWidth/2, windowHeight/2+tSize+tSize/2);
-
-    text("Næste åbningstid d. " + openData.items[events[1]].start.dateTime.substr(8,2) +
-     "/" + openData.items[events[1]].start.dateTime.substr(5,2) +
-      ", fra kl " +openData.items[events[1]].start.dateTime.substr(11,5) + " til "
-      +openData.items[events[1]].end.dateTime.substr(11,5)
+    text("Lukker kl " + events[0].getHour('end') + ":" + events[0].getMinute(), windowWidth/2, windowHeight/2+tSize+tSize/2);
+    text("Næste åbningstid d. " + events[1].getDay('begin') +
+     "/" +  events[1].getMonth('begin') +
+      ", fra kl " + events[1].getHour('begin') + " til "
+      + events[1].getHour('end')
       ,windowWidth/2, windowHeight/2+tSize*4);
   }
   else{
@@ -143,22 +137,21 @@ function drawOpen(){
       textAlign(RIGHT);
       text('lukket',windowWidth/2+textWidth("DD Lab er  ")-textWidth("lukket")/2, windowHeight/2+textPlacement);
       fill(255);
-    textAlign(CENTER);
+      textAlign(CENTER);
       textPlacement=textPlacement+tSize;
       textAlign(CENTER);
       for(var i = 0; i<3; i++){
         textPlacement=textPlacement+tSize;
-        text("Lab'et har åbent d. " + openData.items[events[i]].start.dateTime.substr(8,2) +
-         "/" + openData.items[events[i]].start.dateTime.substr(5,2) +
-          ", fra kl " +openData.items[events[i]].start.dateTime.substr(11,5) + " til "
-          +openData.items[events[i]].end.dateTime.substr(11,5)
+        text("Lab'et har åbent d. " + events[i].getDay('begin') +
+         "/" + events[i].getMonth('begin') +
+          ", fra kl " +events[i].getHour('begin') +":"+ events[i].getMinute('begin') + " til "
+          +events[i].getHour() +":"+ events[i].getMinute()
             ,windowWidth/2, windowHeight/2+textPlacement);
         textPlacement=textPlacement+tSize;
-        text("ansatte på arbejde er "+ openData.items[events[i]].summary,windowWidth/2, windowHeight/2+textPlacement);
+        text("ansatte på arbejde er "+ events[i].name,windowWidth/2, windowHeight/2+textPlacement);
         textPlacement=textPlacement+tSize;
       }
     }
-    // openData= "";*/
 }
 
 function keyTyped() {
