@@ -11,7 +11,7 @@ var tSize;//window.height/20;
 
 var millisJSON;
 var lastTime;
-var loadInterval = 10000;
+var loadInterval = 15000;
 
 var notInLab;
 var timerIntervalMin = 5;
@@ -45,6 +45,7 @@ function setup() {
   millisPause = millis();
   lastTime = millisJSON;
   notInLab = 0;
+  frameRate(1);
 }
 
 function update(){
@@ -70,8 +71,12 @@ function getData(data) {
 function draw() {
   fill(255);
   if(waitForData != 0){
-    update();
     drawOpen();
+  }
+  millisJSON = millis();
+  if(millisJSON>lastTime+loadInterval){
+    update();
+    lastTime = millisJSON;
   }
 }
 
