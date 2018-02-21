@@ -1,7 +1,7 @@
 var openData;
 var min;
 var tSize;
-// var ddImg;
+var ddImg;
 // var labRat;
 
 var millisJSON;
@@ -17,7 +17,7 @@ var waitForData = 0;
 var mgr;
 
 function preload () {
-  // ddImg=loadImage("images/lab1.png");
+  ddImg=loadImage("images/lab1.png");
 }
 
 function setup() {
@@ -84,8 +84,9 @@ function basicBG(){
   background(50);
   fill(255);
   textSize(tSize/2);
-  textAlign(RIGHT);
-  text("ddlab logo placeholder", windowWidth-2 ,tSize/2);
+  // textAlign(RIGHT);
+  // text("ddlab logo placeholder", windowWidth-2 ,tSize/2);
+  image(ddImg, windowWidth-windowWidth/10, height/2, windowWidth/10, windowWidth/10);
   textAlign(CENTER);
   textSize(tSize);
   text("Åbningstider: Man: 10-17, Tirs: 9-16, Ons: 10-17, fre: 9-16:00", windowWidth/2,windowHeight-tSize);
