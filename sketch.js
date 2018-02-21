@@ -1,17 +1,12 @@
 var openData;
-var events = [];
-var announcements = [
-  "Døren til DD Lab må ikke stå åben uden for åbningstiderne, på grund af alarmen.",
-  "Hvis du/I har et projekt, det være sig bachelor-, eksamens- (kandidat), speciale- e.lign. og ønsker 24-7 adgang til lab´et, så send en kort beskrivelse af projektet, den periode det løber i samt en kort beskrivelse af din/jeres tilknytning til universitetet. Du kan altid anvende lab’et indenfor dets åbningstid. Ansøgningen sendes til: Rasmus Lunding, rasl@cc.au.dk"
-];
 var min;
-var tSize;//window.height/20;
+var tSize;
 // var ddImg;
 // var labRat;
 
 var millisJSON;
 var lastTime;
-var loadInterval = 15000;
+var loadInterval = 30000;
 
 var notInLab;
 var timerIntervalMin = 5;
@@ -19,11 +14,11 @@ var millisPause;
 var lastPause;
 var waitForData = 0;
 
+var mgr;
 
 function preload () {
   // ddImg=loadImage("images/lab1.png");
 }
-
 
 function setup() {
   update();
@@ -35,7 +30,7 @@ function setup() {
   else{
     tSize = windowHeight/20;
   }
-  textSize(32);
+  // textSize(32);
   textAlign(CENTER);
   textSize(tSize);
   background(50);
@@ -46,6 +41,18 @@ function setup() {
   lastTime = millisJSON;
   notInLab = 0;
   frameRate(1);
+  mgr = new SceneManager();
+
+  mgr.addScene ( Logo );
+  mgr.addScene ( Info );
+  mgr.addScene ( Open );
+  mgr.addScene ( Access );
+
+  setInterval(function(){
+    mgr.showNextScene();
+    //mgr.showScene(Open);
+    println("next scene!");
+  }, 5000);
 }
 
 function update(){
@@ -69,14 +76,83 @@ function getData(data) {
 }
 
 function draw() {
+  basicBG();
+  mgr.draw();
+}
+
+function basicBG(){
+  background(50);
   fill(255);
-  if(waitForData != 0){
-    drawOpen();
+  textSize(tSize/2);
+  textAlign(RIGHT);
+  text("ddlab logo placeholder", windowWidth-2 ,tSize/2);
+  textAlign(CENTER);
+  textSize(tSize);
+  text("Åbningstider: Man: 10-17, Tirs: 9-16, Ons: 10-17, fre: 9-16:00", windowWidth/2,windowHeight-tSize);
+}
+
+function Logo(){
+  this.draw = function(){
+    textAlign(CENTER);
+    textSize(tSize*2);
+    fill(255);
+    text("Velkommen til", windowWidth/2, windowHeight/2- 2* tSize);
+    textSize(tSize*4);
+    textAlign(CENTER);
+    text("DD Lab", windowWidth/2, windowHeight/2 + 2 * tSize);
+
   }
-  millisJSON = millis();
-  if(millisJSON>lastTime+loadInterval){
+}
+
+function Info(){
+  this.draw = function(){
+    textSize(tSize*2);
+    fill(255);
+    textAlign(CENTER);
+    text("Døren til DD Lab må ikke stå åben \nuden for åbningstiderne, \npå grund af alarmen.",
+    windowWidth/2 , windowHeight/2 - tSize*2);
+  }
+}
+
+function Open(){
+  this.draw = function(){
+    println("Open");
+    fill(255);
+
+    if(waitForData != 0){
+      drawOpen();
+    }
+    millisJSON = millis();
+    if(millisJSON>lastTime+loadInterval){
+      update();
+      lastTime = millisJSON;
+    }
+  }
+}
+
+function Access(){
+  this.draw = function(){
+    textSize(tSize*2);
+    fill(255);
+    textAlign(LEFT);
+    text("Sådan bliver du 24/7 bruger af DD Lab", tSize*2, tSize*4);
+    textSize(tSize);
+    //textAlign(CENTER);
+    text("Hvis du/I har et projekt, det være sig bachelor-, eksamens- (kandidat), speciale- e.lign. og ønsker 24-7 adgang til lab´et, så send en kort beskrivelse af projektet, den periode det løber i samt en kort beskrivelse af din/jeres tilknytning til universitetet.\nDu kan altid anvende lab’et indenfor dets åbningstid. \n\nAnsøgningen sendes til: \nRasmus Lunding, rasl@cc.au.dk",
+    /*windowWidth/2*/tSize*2 , windowHeight/2 - tSize*2, windowWidth-tSize*4);
+  }
+}
+
+function keyTyped() {
+  if (key === 'a') {
+    notInLab = notInLab+ timerIntervalMin*60*1000;
+    millisPause = millis();
+    lastPause = millisPause;
+  }
+  if (key == 's') {
+    notInLab = 0;
     update();
-    lastTime = millisJSON;
+    handleData();
   }
 }
 
@@ -118,22 +194,24 @@ function handleData(){
 }
 
 function drawOpen(){
-  background(50);
+  basicBG();
+  textSize(tSize*2);
   var result = handleData();
   if(result!= 'closed'){
-    text("DD Lab er ",windowWidth/2-textWidth("åbent")/2, windowHeight/2-tSize-tSize/2);
+    textAlign(CENTER);
+    text("DD Lab er ",windowWidth/2-textWidth("åbent")/2, windowHeight/2-tSize*2.5);
     fill(57,123,255);
     textAlign(RIGHT);
-    text("åbent",windowWidth/2+textWidth("DD Lab er ")-textWidth("åbent")/2, windowHeight/2-tSize-tSize/2);
+    text("åbent",windowWidth/2+textWidth("DD Lab er ")-textWidth("åbent")/2, windowHeight/2-tSize*2.5);
     textAlign(CENTER);
     fill(255);
     text(result + ' er på arbejde',windowWidth/2, windowHeight/2);
-    text("Lukker kl " + events[0].getHour('end') + ":" + events[0].getMinute(), windowWidth/2, windowHeight/2+tSize+tSize/2);
-    text("Næste åbningstid d. " + events[1].getDay('begin') +
+    text("Lukker kl " + events[0].getHour('end') + ":" + events[0].getMinute(), windowWidth/2, windowHeight/2+tSize*2.5);
+    /*text("Næste åbningstid d. " + events[1].getDay('begin') +
      "/" +  events[1].getMonth('begin') +
       ", fra kl " + events[1].getHour('begin') + " til "
       + events[1].getHour('end')
-      ,windowWidth/2, windowHeight/2+tSize*4);
+      ,windowWidth/2, windowHeight/2+tSize*4);*/
   }
   else{
       var textPlacement = -2*tSize;
@@ -157,17 +235,4 @@ function drawOpen(){
         textPlacement=textPlacement+tSize;
       }
     }
-}
-
-function keyTyped() {
-  if (key === 'a') {
-    notInLab = notInLab+ timerIntervalMin*60*1000;
-    millisPause = millis();
-    lastPause = millisPause;
-  }
-  if (key == 's') {
-    notInLab = 0;
-    update();
-    handleData();
-  }
 }
