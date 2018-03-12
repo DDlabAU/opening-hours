@@ -47,6 +47,7 @@ function setup() {
   mgr.addScene ( Info );
   mgr.addScene ( Open );
   mgr.addScene ( Access );
+  mgr.addScene ( Announcements );
 
   setInterval(function(){
     mgr.showNextScene();
@@ -138,27 +139,16 @@ function Access(){
     textAlign(LEFT);
     text("Sådan bliver du 24/7 bruger af DD Lab", tSize*2, tSize*4);
     textSize(tSize);
-    //textAlign(CENTER);
     text("Hvis du/I har et projekt, det være sig bachelor-, eksamens- (kandidat), speciale- e.lign. og ønsker 24-7 adgang til lab´et, så send en kort beskrivelse af projektet, den periode det løber i samt en kort beskrivelse af din/jeres tilknytning til universitetet.\nDu kan altid anvende lab’et indenfor dets åbningstid. \n\nAnsøgningen sendes til: \nRasmus Lunding, rasl@cc.au.dk",
-    /*windowWidth/2*/tSize*2 , windowHeight/2 - tSize*2, windowWidth-tSize*4);
+    tSize*2 , windowHeight/2 - tSize*2, windowWidth-tSize*4);
   }
 }
 
-function keyTyped() {
-  if (key === 'a') {
-    notInLab = notInLab+ timerIntervalMin*60*1000;
-    millisPause = millis();
-    lastPause = millisPause;
-  }
-  if (key == 's') {
-    notInLab = 0;
-    update();
-    handleData();
-  }
+function Announcements(){
+
 }
 
 function handleData(){
-  //openData = data; append(openNext, i);
   events = [];
   for(var i = 0; i<openData.items.length; i++){
     var labRat = openData.items[i].summary;
