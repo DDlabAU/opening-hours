@@ -36,9 +36,15 @@ function Event(name, startDate, endDate, description){
       return this.returnSubstring(this.endDate, 14,2);
     }
   },
-
-  this.returnSubstring =function(dateString, start, end){
+  this.returnSubstring = function(dateString, start, end){
     var returnVal = dateString.substr(start, end);
     return returnVal;
+  },
+  this.isNow = function(){
+    if(this.getDay("begin")==day() && hour()>=this.getHour("begin") && hour()<this.getHour("end")){
+      return this.name;
+    }
+    else return 'closed';
+    return 'closed';
   }
 }
