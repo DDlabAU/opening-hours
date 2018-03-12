@@ -2,17 +2,6 @@ var openData;
 var min;
 var tSize;
 var ddImg;
-// var labRat;
-
-var millisJSON;
-var lastTime;
-var loadInterval = 30000;
-
-var notInLab;
-var timerIntervalMin = 5;
-var millisPause;
-var lastPause;
-var waitForData = 0;
 
 var mgr;
 
@@ -36,9 +25,7 @@ function setup() {
   background(50);
   text("Henter JSON", windowWidth/2, windowHeight/2);
 
-  millisJSON = millis();
-  millisPause = millis();
-  lastTime = millisJSON;
+  // millisJSON = millis();
   notInLab = 0;
   frameRate(1);
   mgr = new SceneManager();
@@ -54,10 +41,14 @@ function setup() {
     //mgr.showScene(Open);
     println("next scene!");
   }, 5000);
+  setInterval(function(){
+    update();
+  }, 30000);
 }
 
 function update(){
   loadJSON('https://script.googleusercontent.com/macros/echo?user_content_key=ZOk4S3iYBmLoCSVEYTVn6jZX3Fz-Y0oDKxVEMBBz0hsaTlJgxjhypDtgykm4fEIynfmyFfA0uyg2c44x2MHVCTuVgThqk23hm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnDRtrHJ_B07pTY_RGQB9NgIlvQFo4AEb7AWNFWyMdXAla4PE5KW5lkb1btx4KUrnXmlgLNiGRXNx&lib=MLZpv_I1oO55YzaOvgVD5WaTNt6qxM66-', getData);
+  println("getting data");
 }
 
 function windowResized() {
@@ -118,16 +109,11 @@ function Info(){
 
 function Open(){
   this.draw = function(){
-    println("Open");
+    // println("Open");
     fill(255);
 
     if(waitForData != 0){
       drawOpen();
-    }
-    millisJSON = millis();
-    if(millisJSON>lastTime+loadInterval){
-      update();
-      lastTime = millisJSON;
     }
   }
 }
@@ -175,11 +161,11 @@ function handleData(){
   }
 
   if(events[0].getDay("begin")==day() && hour()>=events[0].getHour("begin") && hour()<events[0].getHour("end")){
-    println("OPEN!!!");
+    // println("OPEN!!!");
     return events[0].name;
   }
   else {
-    println("CLOSED!!!");
+    // println("CLOSED!!!");
     return 'closed';
   }
 }
