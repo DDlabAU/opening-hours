@@ -1,11 +1,11 @@
-var openData;
-var min;
-var tSize;
-var ddImg;
+let openData;
+let min;
+let tSize;
+let ddImg;
 
-var mgr;
-var events = [];
-var announcements = [];
+let mgr;
+let events = [];
+let announcements = [];
 function preload () {
   // ddImg=loadImage("images/lab1.png");
 }
@@ -69,8 +69,8 @@ function getData(data) {
   waitForData= 1;
   events = [];
   announcements =[];
-  for(var i = 0; i<openData.items.length; i++){
-    var labRat = openData.items[i].summary;
+  for(let i = 0; i<openData.items.length; i++){
+    let labRat = openData.items[i].summary;
     if(labRat=='Niels' || labRat == 'Ann' || labRat == 'Nikolaj' || labRat == 'Anders' || labRat == 'Søren'){
       append(events,
         new Event(
@@ -162,7 +162,7 @@ function Announcements(){
 function drawOpen(){
   basicBG();
   textSize(tSize*2);
-  var result = events[0].isNow();
+  let result = events[0].isNow();
   if(result!= 'closed'){
     textAlign(CENTER);
     text("DD Lab er ",windowWidth/2-textWidth("åbent")/2, windowHeight/2-tSize*2.5);
@@ -175,7 +175,7 @@ function drawOpen(){
     text("Lukker kl " + events[0].getHour('end') + ":" + events[0].getMinute(), windowWidth/2, windowHeight/2+tSize*2.5);
   }
   else{
-    var textPlacement = -2*tSize;
+    let textPlacement = -2*tSize;
     text('DD Lab er ',windowWidth/2-textWidth("lukket")/2, windowHeight/2+textPlacement);
     fill(255,0,0);
     textAlign(RIGHT);
@@ -184,7 +184,7 @@ function drawOpen(){
     textAlign(CENTER);
     textPlacement=textPlacement+tSize;
     textAlign(CENTER);
-    for(var i = 0; i<3; i++){
+    for(let i = 0; i<3; i++){
       textPlacement=textPlacement+tSize;
       text("Lab'et har åbent d. " + events[i].getDay('begin') +
        "/" + events[i].getMonth('begin') +
